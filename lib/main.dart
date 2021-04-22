@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ims/src/app/views/bluetooth/bluetooth_view.dart';
+import 'src/app/views/nav/nav_view.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: BluetoothView(),
+      home: NavView(),
     );
   }
 }

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ims/src/app/views/dashboard/dashboard_view.dart';
+import 'package:ims/src/app/views/mower_controller/mower_controller_view.dart';
 import 'package:stacked/stacked.dart';
+
+import '../bluetooth/bluetooth_view.dart';
 
 class NavView extends ViewModelBuilderWidget<IndexTrackingViewModel> {
   @override
@@ -13,8 +17,8 @@ class NavView extends ViewModelBuilderWidget<IndexTrackingViewModel> {
           boxShadow: [BoxShadow(color: Colors.black)],
         ),
         child: BottomNavigationBar(
-          selectedItemColor: Colors.red,
-          backgroundColor: Colors.black,
+          selectedItemColor: Colors.blueAccent,
+          backgroundColor: Colors.white,
           currentIndex: viewModel.currentIndex,
           onTap: viewModel.setIndex,
           items: [
@@ -44,11 +48,11 @@ class NavView extends ViewModelBuilderWidget<IndexTrackingViewModel> {
   Widget getViewForIndex(int index) {
     switch (index) {
       case 0:
-        return this;
+        return BluetoothView();
       case 1:
-        return this;
+        return DashboardView();
       case 2:
-        return this;
+        return MowerControllerView();
     }
   }
 }
