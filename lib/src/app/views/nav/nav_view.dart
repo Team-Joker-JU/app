@@ -23,16 +23,16 @@ class NavView extends ViewModelBuilderWidget<IndexTrackingViewModel> {
           onTap: viewModel.setIndex,
           items: [
             BottomNavigationBarItem(
+              icon: Icon(Icons.bluetooth),
+              label: "Connect",
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: "Home",
+              label: "Dashboard",
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.history),
-              label: "Second",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "Third",
+              icon: Icon(Icons.control_camera),
+              label: "Controller",
             ),
           ],
         ),
