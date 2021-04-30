@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ims/src/app/view-models/bluetooth/bluetooth_view_model.dart';
+import 'package:ims/src/app/view-models/bluetooth_view_model.dart';
 import 'package:ims/src/app/views/bluetooth/components/body.dart';
 import 'package:stacked/stacked.dart';
 
@@ -25,7 +25,7 @@ class BluetoothView extends ViewModelBuilderWidget<BluetoothViewModel> {
 
   @override
   Widget builder(
-      BuildContext context, BluetoothViewModel viewModel, Widget child) {
+      BuildContext context, BluetoothViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Pair with mower"),

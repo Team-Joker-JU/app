@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ShadowCard extends Card {
-  ShadowCard({Key key, Widget child, EdgeInsetsGeometry margin})
+  ShadowCard({required Key key, Widget? child, required EdgeInsetsGeometry margin})
       : super(
             key: key,
             child: child,
