@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:ims/src/app/view-models/bluetooth_view_model.dart';
-import 'package:ims/src/app/views/bluetooth/components/device_cart.dart';
+import 'package:ims/src/app/views/bluetooth/components/device_card.dart';
 import 'package:stacked/stacked.dart';
 
 class DeviceList extends ViewModelBuilderWidget<BluetoothViewModel> {
@@ -21,7 +21,7 @@ class DeviceList extends ViewModelBuilderWidget<BluetoothViewModel> {
         return ListView.builder(
           itemCount: snapshot.data!.length,
           itemBuilder: (_, index) {
-            return DeviceCard(viewModel, snapshot.data![index]);
+            return DeviceCard(viewModel, snapshot.data![index].device);
           },
         );
       },

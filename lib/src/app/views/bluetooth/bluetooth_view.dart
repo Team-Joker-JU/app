@@ -28,7 +28,7 @@ class BluetoothView extends ViewModelBuilderWidget<BluetoothViewModel> {
       BuildContext context, BluetoothViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pair with mower"),
+        title: Text("Bluetooth"),
         backgroundColor: Colors.blueAccent,
         actions: <Widget>[
           viewModel.isRefreshing

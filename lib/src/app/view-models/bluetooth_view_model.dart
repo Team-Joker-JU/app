@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_blue/flutter_blue.dart';
@@ -5,38 +6,62 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ims/src/app/data/bluetooth/bluetooth_device_manager.dart';
 import 'package:ims/src/app/data/bluetooth/bluetooth_discover_manager.dart';
-import 'package:ims/src/app/data/bluetooth/containers/robot-container.dart';
+import 'package:ims/src/app/data/bluetooth/controllers/robot_controller.dart';
+import 'package:ims/src/app/data/bluetooth/interactors/robot_interactor.dart';
 import 'package:ims/src/app/views/handshake/handshake_view.dart';
 import 'package:stacked/stacked.dart';
 
-class BluetoothViewModel extends BaseViewModel {
-  BluetoothDiscoverManager _discoveryManager = GetIt.instance<BluetoothDiscoverManager>();
+import '../data/bluetooth/bluetooth_device_manager.dart';
 
-  BluetoothDeviceManager _deviceManager = GetIt.instance<BluetoothDeviceManager<RobotContainer>>();
+class BluetoothViewModel extends BaseViewModel {
+  final _discoveryManager = GetIt.I<BluetoothDiscoverManager>();
+  final _deviceManager = GetIt.I<BluetoothDeviceManager<RobotInteractor, RobotController>>();
+
+  final _refreshTimeout = Duration(seconds: 10);
 
   Stream<List<ScanResult>> get scanResults => _discoveryManager.scanResults;
+
+  bool _isEnabled = false;
+  bool get isEnabled => _isEnabled;
 
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
-  set isRefreshing(bool value) {
-    _isRefreshing = value;
-    notifyListeners();
-  }
+  BluetoothDevice? _selectedDevice;
+  BluetoothDevice? get selectedDevice => _selectedDevice;
 
-  void initialize() {
-    this.refresh();
+  Future<void> initialize() {
+    return refresh();
   }
 
   Future<void> connect(BluetoothDevice device) async {
-    this._isRefreshing = false;
-    await this._discoveryManager.stopScan();
+    _selectedDevice = device;
+    notifyListeners();
 
-    if (await _deviceManager.connect(device)) Get.to(HandshakeView())!.whenComplete(() => _deviceManager.disconnect());
+    try {
+      await _deviceManager.connect(device);
+      await Get.to(HandshakeView());
+      await disconnect();
+    } on TimeoutException catch (e) {
+      await disconnect();
+      log(e.message!);
+    }
   }
 
-  void refresh() {
-    this.isRefreshing = true;
-    this._discoveryManager.startScan(timeout: Duration(seconds: 10)).whenComplete(() => this.isRefreshing = false);
+  Future<void> disconnect() async {
+    await _deviceManager.disconnect();
+    _selectedDevice = null;
+    notifyListeners();
+  }
+
+  Future<void> refresh() async {
+    await _discoveryManager.stopScan();
+
+    _isRefreshing = true;
+    notifyListeners();
+
+    await _discoveryManager.startScan(timeout: _refreshTimeout);
+    _isRefreshing = false;
+    notifyListeners();
   }
 }
