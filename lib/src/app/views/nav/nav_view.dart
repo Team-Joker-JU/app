@@ -4,7 +4,7 @@ import 'package:stacked/stacked.dart';
 class NavView extends ViewModelBuilderWidget<IndexTrackingViewModel> {
   @override
   Widget builder(
-      BuildContext context, IndexTrackingViewModel viewModel, Widget child) {
+      BuildContext context, IndexTrackingViewModel viewModel, Widget? child) {
     return Scaffold(
       body: getViewForIndex(viewModel.currentIndex),
       bottomNavigationBar: Container(
@@ -41,7 +41,7 @@ class NavView extends ViewModelBuilderWidget<IndexTrackingViewModel> {
     return IndexTrackingViewModel();
   }
 
-  Widget getViewForIndex(int index) {
+  Widget? getViewForIndex(int index) {
     switch (index) {
       case 0:
         return this;

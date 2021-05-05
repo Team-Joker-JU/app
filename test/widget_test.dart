@@ -7,13 +7,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
 
-import 'package:ims/main.dart';
+import 'package:ims/src/app/views/bluetooth/bluetooth_view.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(GetMaterialApp(home: BluetoothView()));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
