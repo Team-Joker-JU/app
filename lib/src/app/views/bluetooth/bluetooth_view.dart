@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ims/src/app/exceptions/system_exception.dart';
 import 'package:ims/src/app/view-models/bluetooth_view_model.dart';
 import 'package:ims/src/app/views/bluetooth/components/body.dart';
 import 'package:stacked/stacked.dart';
+import 'package:system_settings/system_settings.dart';
 
 class BluetoothView extends ViewModelBuilderWidget<BluetoothViewModel> {
   @override
@@ -36,7 +38,7 @@ class BluetoothView extends ViewModelBuilderWidget<BluetoothViewModel> {
                   onPressed: null,
                   icon: Icon(Icons.refresh, color: Colors.black12, size: 30))
               : IconButton(
-                  onPressed: () async => viewModel.refresh(),
+                  onPressed: () async => await viewModel.refresh(),
                   icon: Icon(Icons.refresh, color: Colors.white, size: 30)),
         ],
       ),

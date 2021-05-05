@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
@@ -20,9 +21,10 @@ class BluetoothViewModel extends BaseViewModel {
   final _refreshTimeout = Duration(seconds: 10);
 
   Stream<List<ScanResult>> get scanResults => _discoveryManager.scanResults;
+  
+  Future<bool> get isAvailable => _discoveryManager.isAvailable;
 
-  bool _isEnabled = false;
-  bool get isEnabled => _isEnabled;
+  Future<bool> get isEnabled => _discoveryManager.isEnabled;
 
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
@@ -53,14 +55,11 @@ class BluetoothViewModel extends BaseViewModel {
     _selectedDevice = null;
     notifyListeners();
   }
-
+  
   Future<void> refresh() async {
-    print(await _discoveryManager.requestPermissions());
-    if (!await _discoveryManager.requestPermissions())
-      return;
+    if (!await isRefreshable()) return;
 
     await _discoveryManager.stopScan();
-
     _isRefreshing = true;
     notifyListeners();
 
@@ -68,4 +67,69 @@ class BluetoothViewModel extends BaseViewModel {
     _isRefreshing = false;
     notifyListeners();
   }
+
+  Future<bool> isRefreshable() async {
+    if (!await _discoveryManager.requestPermissions()) {
+      _snackbar("Permission", "Permission denied.", SnackBarAction(
+        label: "App settings", 
+        onPressed: () => {
+
+        })
+      );
+      return false;
+    }
+
+    if (!await _discoveryManager.isAvailable) {
+      _snackbar("Bluetooth", "Bluetooth adapter missing.", SnackBarAction(
+        label: "Bluetooth settings", 
+        onPressed: () => {
+
+        })
+      );
+      return false;
+    }
+      
+
+    if (!await _discoveryManager.isEnabled) {
+        _snackbar("Bluetooth", "Bluetooth not enabled.", SnackBarAction(
+          label: "Bluetooth settings", 
+          onPressed: () => {
+
+          })
+        );
+        return false;
+    }
+      
+    return true;
+  }
+
+  void _snackbar(String title, String message, SnackBarAction action) {
+    if (!Get.isSnackbarOpen!) {
+      Get.rawSnackbar( 
+        padding: EdgeInsets.only(left: 20, right: 30, top: 16, bottom: 16),
+        title: title,
+        message: message,
+        mainButton: ElevatedButton(
+          onPressed: action.onPressed, 
+          child: Text(action.label)
+        ),
+      );
+    }
+
+  }
 }
+
+/*
+
+content: Row(
+                            children: <Widget>[
+                              Icon(Icons.warning, color: Colors.red),
+                              SizedBox(width: 20),
+                              Text(e.message),
+                            ],
+                          ),
+                          action: SnackBarAction(
+                            label: "System settings",
+                            onPressed: SystemSettings.app,
+                          ),
+                          */

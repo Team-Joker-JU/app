@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ims/src/app/view-models/bluetooth_view_model.dart';
-import 'package:ims/src/app/views/bluetooth/components/bluetooth_enable.dart';
 import 'package:ims/src/app/views/bluetooth/components/device_list.dart';
 import 'package:stacked/stacked.dart';
 
@@ -21,7 +20,6 @@ class Body extends ViewModelBuilderWidget<BluetoothViewModel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          BluetoothCard(_viewModel),
           Text("Devices"),
           Card(
             child: viewModel.isRefreshing
