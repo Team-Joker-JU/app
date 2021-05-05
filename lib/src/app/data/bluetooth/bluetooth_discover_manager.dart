@@ -5,6 +5,22 @@ class BluetoothDiscoverManager {
   Stream<BluetoothState> get state => FlutterBlue.instance.state;
   Stream<List<ScanResult>> get scanResults => FlutterBlue.instance.scanResults.asBroadcastStream();
   
+  Future<bool> get isAvailable => FlutterBlue.instance.isAvailable;
+
+  Future<bool> get isEnabled => FlutterBlue.instance.isOn;
+
+  Future<bool> requestPermissions() async {
+    try {
+      (await [
+        Permission.bluetooth,
+        Permission.location,
+      ].request()).values.firstWhere((element) => element.isDenied);
+      return false;
+    } on StateError catch (_) {
+      return true;
+    }
+  }
+
   Future<dynamic> startScan({required Duration timeout, ScanMode scanMode = ScanMode.balanced}) async {
     return FlutterBlue.instance.startScan(timeout: timeout, scanMode: scanMode);
   }

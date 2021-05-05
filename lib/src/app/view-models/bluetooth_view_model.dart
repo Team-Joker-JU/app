@@ -30,7 +30,7 @@ class BluetoothViewModel extends BaseViewModel {
   BluetoothDevice? _selectedDevice;
   BluetoothDevice? get selectedDevice => _selectedDevice;
 
-  Future<void> initialize() {
+  Future<void> initialize() async {
     return refresh();
   }
 
@@ -55,6 +55,10 @@ class BluetoothViewModel extends BaseViewModel {
   }
 
   Future<void> refresh() async {
+    print(await _discoveryManager.requestPermissions());
+    if (!await _discoveryManager.requestPermissions())
+      return;
+
     await _discoveryManager.stopScan();
 
     _isRefreshing = true;
