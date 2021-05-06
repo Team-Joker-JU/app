@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ims/src/app/exceptions/system_exception.dart';
 import 'package:ims/src/app/view-models/bluetooth_view_model.dart';
 import 'package:ims/src/app/views/bluetooth/components/body.dart';
 import 'package:stacked/stacked.dart';

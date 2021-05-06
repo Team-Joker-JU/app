@@ -7,9 +7,10 @@ import '../bluetooth_resolver.dart';
 
 class RobotInteractor extends BluetoothInteractor {
   factory RobotInteractor(List<BluetoothService> services) {
-    var robotService = BluetoothResolver.findService(services, Guid(BLEServices.ROBOT_UUID))!;
-    var robotHandshake = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_HANDSHAKE_UUID))!;
-    var robotAcceleration = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_ACCELERATION_UUID))!;
+    final robotService = BluetoothResolver.findService(services, Guid(BLEServices.ROBOT_UUID))!;
+    final robotHandshake = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_HANDSHAKE_UUID))!;
+    final robotAcceleration = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_ACCELERATION_UUID))!;
+    final robotSteering = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_STEERING_UUID))!;
 
     final servicesByUUID = Map<Guid, BluetoothService>();
     servicesByUUID[Guid(BLEServices.ROBOT_UUID)] = robotService;
@@ -17,6 +18,7 @@ class RobotInteractor extends BluetoothInteractor {
     final characteristicsByUUID = Map<Guid, BluetoothCharacteristic>();
     characteristicsByUUID[Guid(BLECharacteristics.ROBOT_HANDSHAKE_UUID)] = robotHandshake;
     characteristicsByUUID[Guid(BLECharacteristics.ROBOT_ACCELERATION_UUID)] = robotAcceleration;
+    characteristicsByUUID[Guid(BLECharacteristics.ROBOT_STEERING_UUID)] = robotSteering;
 
     return RobotInteractor._(servicesByUUID, characteristicsByUUID);
   }

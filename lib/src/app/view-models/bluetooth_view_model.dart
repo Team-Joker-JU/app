@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -37,6 +38,9 @@ class BluetoothViewModel extends BaseViewModel {
   }
 
   Future<void> connect(BluetoothDevice device) async {
+    await _discoveryManager.stopScan();
+
+    _isRefreshing = false;
     _selectedDevice = device;
     notifyListeners();
 

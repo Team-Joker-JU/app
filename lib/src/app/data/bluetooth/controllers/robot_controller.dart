@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:ims/src/app/data/bluetooth/bluetooth_controller.dart';
@@ -35,6 +36,15 @@ class RobotController extends BluetoothController {
     await this._interactor.setNotifyValue(Guid(ROBOT_HANDSHAKE_UUID), false);
     return handshaked;
   }
+
+  Future<void> setAcceleration(int acceleration) {
+    return this._interactor.write(Guid(ROBOT_ACCELERATION_UUID), [acceleration]);
+  }
+
+  Future<void> setSteering(int steering) {
+    return this._interactor.write(Guid(ROBOT_STEERING_UUID), [steering]);
+  }
+
 /*
   Future<Int8> getAcceleration() async {
     return this._container.characteristicsByUUID[ROBOT_ACCELERATION_UUID]?.read() as Int8;
