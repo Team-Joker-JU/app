@@ -15,25 +15,25 @@ class ControllerView extends ViewModelBuilderWidget<ControllerViewModel> {
   bool get disposeViewModel => true;
 
   @override
-  void onViewModelReady(ControllerViewModel viewModel) async {
-  }
+  void onViewModelReady(ControllerViewModel viewModel) async {}
 
   @override
-  ControllerViewModel viewModelBuilder(BuildContext context){
+  ControllerViewModel viewModelBuilder(BuildContext context) {
     return ControllerViewModel();
   }
 
   @override
-  Widget builder(BuildContext context, ControllerViewModel viewModel, Widget? child){
+  Widget builder(
+      BuildContext context, ControllerViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Controller View"),
       ),
       body: Container(
         child: JoystickView(
-          onDirectionChanged: (degree, distance){
-            print(degree);
-            print(distance);
+          onDirectionChanged: (degree, distance) {
+            viewModel.setSteering(degree);
+            viewModel.setAcceleration(degree);
           },
         ),
       ),
