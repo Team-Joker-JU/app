@@ -33,7 +33,7 @@ class ControllerView extends ViewModelBuilderWidget<ControllerViewModel> {
         child: JoystickView(
           onDirectionChanged: (degree, distance) {
             viewModel.setSteering(degree);
-            viewModel.setAcceleration(degree);
+            viewModel.setAcceleration(distance);
           },
         ),
       ),

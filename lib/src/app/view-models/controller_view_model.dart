@@ -1,15 +1,33 @@
+import 'package:get_it/get_it.dart';
+import 'package:ims/src/app/data/bluetooth/bluetooth_device_manager.dart';
+import 'package:ims/src/app/data/bluetooth/controllers/robot_controller.dart';
+import 'package:ims/src/app/data/bluetooth/interactors/robot_interactor.dart';
 import 'package:stacked/stacked.dart';
 import 'dart:math';
 import 'package:vector_math/vector_math.dart';
 
 class ControllerViewModel extends BaseViewModel {
-  void setAcceleration(degree) {
-    int acceleration = cos(radians(degree)).round();
-    print("Y: " + acceleration.toString());
+  int acceleration = 0;
+  int steering = 0;
+  bool autoDriving = true;
+
+  final _deviceManager =
+      GetIt.I<BluetoothDeviceManager<RobotInteractor, RobotController>>();
+
+  void setAcceleration(distance) {
+    acceleration = (distance * 100.0).round();
+    _deviceManager.controller?.setAcceleration(acceleration);
   }
 
   void setSteering(degree) {
-    int steering = sin(radians(degree)).round();
-    print("X: " + steering.toString());
+    print(degree);
+    if (degree > 180.0) {
+      steering = ((degree % 180) / 2 - 90).round();
+    } else {
+      steering = ((degree % 180) / 2).round();
+    }
+    _deviceManager.controller?.setSteering(steering);
   }
+
+  void switchMowerMode() {}
 }
