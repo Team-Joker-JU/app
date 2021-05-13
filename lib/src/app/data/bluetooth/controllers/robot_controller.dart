@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:ims/src/app/data/bluetooth/bluetooth_controller.dart';
