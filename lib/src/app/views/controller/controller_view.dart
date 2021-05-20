@@ -29,13 +29,26 @@ class ControllerView extends ViewModelBuilderWidget<ControllerViewModel> {
       appBar: AppBar(
         title: Text("Controller View"),
       ),
-      body: Container(
-        child: JoystickView(
-          onDirectionChanged: (degree, distance) {
-            viewModel.setSteering(degree);
-            viewModel.setAcceleration(distance);
-          },
-        ),
+      body: Column(
+        children: [
+          FlatButton(
+              onPressed: (){
+
+                viewModel.switchMowerMode();
+              },
+              child: Text(viewModel.mowerMode),
+          ),
+          Container(
+            child: JoystickView(
+              onDirectionChanged: (degree, distance) {
+                if(viewModel.autoDriving != true){
+                  viewModel.setSteering(degree);
+                  viewModel.setAcceleration(distance);
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
