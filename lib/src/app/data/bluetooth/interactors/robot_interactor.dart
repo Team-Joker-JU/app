@@ -8,23 +8,21 @@ import '../bluetooth_resolver.dart';
 class RobotInteractor extends BluetoothInteractor {
   factory RobotInteractor(List<BluetoothService> services) {
     final robotService = BluetoothResolver.findService(services, Guid(BLEServices.ROBOT_UUID))!;
-    final robotHandshake = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_HANDSHAKE_UUID))!;
     final robotAcceleration = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_ACCELERATION_UUID))!;
     final robotSteering = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_STEERING_UUID))!;
+    final robotCollision = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_COLLISION_UUID))!;
 
     final servicesByUUID = Map<Guid, BluetoothService>();
     servicesByUUID[Guid(BLEServices.ROBOT_UUID)] = robotService;
 
     final characteristicsByUUID = Map<Guid, BluetoothCharacteristic>();
-    characteristicsByUUID[Guid(BLECharacteristics.ROBOT_HANDSHAKE_UUID)] = robotHandshake;
     characteristicsByUUID[Guid(BLECharacteristics.ROBOT_ACCELERATION_UUID)] = robotAcceleration;
     characteristicsByUUID[Guid(BLECharacteristics.ROBOT_STEERING_UUID)] = robotSteering;
+    characteristicsByUUID[Guid(BLECharacteristics.ROBOT_COLLISION_UUID)] = robotCollision;
 
     return RobotInteractor._(servicesByUUID, characteristicsByUUID);
   }
 
-  RobotInteractor._(
-    Map<Guid, BluetoothService> servicesByUUID, 
-    Map<Guid, BluetoothCharacteristic> characteristicsByUUID
-  ) : super(servicesByUUID, characteristicsByUUID);
+  RobotInteractor._(Map<Guid, BluetoothService> servicesByUUID, Map<Guid, BluetoothCharacteristic> characteristicsByUUID)
+      : super(servicesByUUID, characteristicsByUUID);
 }

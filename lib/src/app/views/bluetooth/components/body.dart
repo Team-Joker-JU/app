@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ims/src/app/view-models/bluetooth_view_model.dart';
 import 'package:ims/src/app/views/bluetooth/components/device_list.dart';
+import 'package:ims/src/app/views/shared/default_safe_area.dart';
 import 'package:stacked/stacked.dart';
 
 class Body extends ViewModelBuilderWidget<BluetoothViewModel> {
@@ -12,11 +13,8 @@ class Body extends ViewModelBuilderWidget<BluetoothViewModel> {
   bool get disposeViewModel => false;
 
   @override
-  Widget builder(
-      BuildContext context, BluetoothViewModel viewModel, Widget? child) {
-    return Container(
-      //margin: const EdgeInsets.only(
-      //    left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+  Widget builder(BuildContext context, BluetoothViewModel viewModel, Widget? child) {
+    return DefaultSafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
