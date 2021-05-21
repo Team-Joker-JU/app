@@ -8,33 +8,10 @@ import 'package:ims/src/util/ble_characteristics.dart';
 class RobotController extends BluetoothController {
   RobotInteractor _interactor;
 
+  StreamSubscription<List<int>>? _collisionSubscription;
+  late StreamController<int> _collisionController = StreamController<int>();
+
   RobotController(this._interactor) : super(_interactor) {}
-
-  Future<bool> handshake({Duration timeout = const Duration(seconds: 5)}) async {
-    await this._interactor.setNotifyValue(Guid(ROBOT_HANDSHAKE_UUID), true);
-    await this._interactor.write(Guid(ROBOT_HANDSHAKE_UUID), [0]);
-
-    bool handshaked = false;
-
-    try {
-      var subscription;
-          subscription = this
-              ._interactor
-              .value(Guid(ROBOT_HANDSHAKE_UUID))
-              .timeout(timeout)
-              .listen((event) {
-            handshaked = event as bool;
-            if (handshaked) subscription.cancel();
-          });
-    } on TimeoutException catch (_) {
-
-    } finally {
-
-    }
-
-    await this._interactor.setNotifyValue(Guid(ROBOT_HANDSHAKE_UUID), false);
-    return handshaked;
-  }
 
   Future<void> setAcceleration(int acceleration) {
     return this._interactor.write(Guid(ROBOT_ACCELERATION_UUID), [acceleration]);
@@ -44,15 +21,20 @@ class RobotController extends BluetoothController {
     return this._interactor.write(Guid(ROBOT_STEERING_UUID), [steering]);
   }
 
-/*
-  Future<Int8> getAcceleration() async {
-    return this._container.characteristicsByUUID[ROBOT_ACCELERATION_UUID]?.read() as Int8;
+  Future<bool> startCollision() async {
+    return this._interactor.setNotifyValue(Guid(ROBOT_COLLISION_UUID), true);
   }
 
-  Future<void> setAcceleration(Uint8 acceleration) async {
-    return this
-        ._container
-        .characteristicsByUUID[ROBOT_ACCELERATION_UUID]
-        ?.write([acceleration as int]);*
-  }*/
+  Future<bool> stopCollision() async {
+    _collisionSubscription?.cancel();
+    return this._interactor.setNotifyValue(Guid(ROBOT_COLLISION_UUID), false);
+  }
+
+  Stream<int> collisionResults() {
+    _collisionSubscription = this._interactor.value(Guid(ROBOT_COLLISION_UUID)).listen((event) {
+      if (event.isNotEmpty) _collisionController.add(event.first);
+    });
+
+    return _collisionController.stream.asBroadcastStream();
+  }
 }

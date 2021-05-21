@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ims/src/app/views/bluetooth/bluetooth_view.dart';
-import 'package:ims/src/app/views/controller/controller_view.dart';
+import 'package:ims/src/app/views/dashboard/dashboard_view.dart';
+import 'package:ims/src/app/views/remote/remote_view.dart';
 import 'package:stacked/stacked.dart';
 
-class NavView extends ViewModelBuilderWidget<IndexTrackingViewModel> {
+class NavigationView extends ViewModelBuilderWidget<IndexTrackingViewModel> {
   @override
-  Widget builder(
-      BuildContext context, IndexTrackingViewModel viewModel, Widget? child) {
+  Widget builder(BuildContext context, IndexTrackingViewModel viewModel, Widget? child) {
     return Scaffold(
       body: getViewForIndex(viewModel.currentIndex),
       bottomNavigationBar: Container(
@@ -22,16 +22,12 @@ class NavView extends ViewModelBuilderWidget<IndexTrackingViewModel> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: "Home",
+              label: "Dashboard",
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.history),
-              label: "Second",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "Third",
-            ),
+              icon: Icon(Icons.settings_remote),
+              label: "Remote control",
+            )
           ],
         ),
       ),
@@ -46,11 +42,9 @@ class NavView extends ViewModelBuilderWidget<IndexTrackingViewModel> {
   Widget? getViewForIndex(int index) {
     switch (index) {
       case 0:
-        return BluetoothView();
+        return DashboardView();
       case 1:
-        return this;
-      case 2:
-        return ControllerView();
+        return RemoteView();
     }
   }
 }

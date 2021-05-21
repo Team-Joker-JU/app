@@ -1,6 +1,7 @@
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:ims/src/app/data/bluetooth/interactors/robot_interactor.dart';
 import 'package:ims/src/app/data/bluetooth/interactors/uart_interactor.dart';
+import 'package:synchronized/synchronized.dart';
 
 class BluetoothInteractor {
   Map<Guid, BluetoothService> _servicesByUUID;
@@ -8,8 +9,12 @@ class BluetoothInteractor {
 
   BluetoothInteractor(this._servicesByUUID, this._characteristicsByUUID);
 
-  Future<void> write(Guid uuid, List<int> values) {
-    return _characteristicsByUUID[uuid]!.write(values);
+  var _lock = new Lock();
+
+  Future<void> write(Guid uuid, List<int> values) async {
+    await _lock.synchronized(() async {
+      return _characteristicsByUUID[uuid]!.write(values);
+    });
   }
 
   Future<List<int>> read(Guid uuid) {
@@ -24,9 +29,7 @@ class BluetoothInteractor {
     return _characteristicsByUUID[uuid]!.value;
   }
 
-  static Interactor? createInstance<
-    Interactor extends BluetoothInteractor
-  >(List<BluetoothService> services) {
+  static Interactor? createInstance<Interactor extends BluetoothInteractor>(List<BluetoothService> services) {
     switch (Interactor) {
       case RobotInteractor:
         return RobotInteractor(services) as Interactor;

@@ -10,6 +10,7 @@ import 'package:ims/src/app/data/bluetooth/bluetooth_discover_manager.dart';
 import 'package:ims/src/app/data/bluetooth/controllers/robot_controller.dart';
 import 'package:ims/src/app/data/bluetooth/interactors/robot_interactor.dart';
 import 'package:ims/src/app/views/handshake/handshake_view.dart';
+import 'package:ims/src/app/views/navigation/navigation_view.dart';
 import 'package:stacked/stacked.dart';
 
 import '../data/bluetooth/bluetooth_device_manager.dart';
@@ -21,7 +22,7 @@ class BluetoothViewModel extends BaseViewModel {
   final _refreshTimeout = Duration(seconds: 10);
 
   Stream<List<ScanResult>> get scanResults => _discoveryManager.scanResults;
-  
+
   Future<bool> get isAvailable => _discoveryManager.isAvailable;
 
   Future<bool> get isEnabled => _discoveryManager.isEnabled;
@@ -45,8 +46,7 @@ class BluetoothViewModel extends BaseViewModel {
 
     try {
       await _deviceManager.connect(device);
-      await Get.to(HandshakeView());
-      await disconnect();
+      await Get.offAll(NavigationView());
     } on TimeoutException catch (e) {
       await disconnect();
       log(e.message!);
@@ -58,7 +58,7 @@ class BluetoothViewModel extends BaseViewModel {
     _selectedDevice = null;
     notifyListeners();
   }
-  
+
   Future<void> refresh() async {
     if (!await isRefreshable()) return;
 
@@ -73,66 +73,34 @@ class BluetoothViewModel extends BaseViewModel {
 
   Future<bool> isRefreshable() async {
     if (!await _discoveryManager.requestPermissions()) {
-      _snackbar("Permission", "Permission denied.", SnackBarAction(
-        label: "App settings", 
-        onPressed: () => {
-
-        })
-      );
+      _snackbar("Permission", "Permission denied.",
+          SnackBarAction(label: "App settings", onPressed: () => {}));
       return false;
     }
 
     if (!await _discoveryManager.isAvailable) {
-      _snackbar("Bluetooth", "Bluetooth adapter missing.", SnackBarAction(
-        label: "Bluetooth settings", 
-        onPressed: () => {
-
-        })
-      );
+      _snackbar("Bluetooth", "Bluetooth adapter missing.",
+          SnackBarAction(label: "Bluetooth settings", onPressed: () => {}));
       return false;
     }
-      
 
     if (!await _discoveryManager.isEnabled) {
-        _snackbar("Bluetooth", "Bluetooth not enabled.", SnackBarAction(
-          label: "Bluetooth settings", 
-          onPressed: () => {
-
-          })
-        );
-        return false;
+      _snackbar("Bluetooth", "Bluetooth not enabled.",
+          SnackBarAction(label: "Bluetooth settings", onPressed: () => {}));
+      return false;
     }
-      
+
     return true;
   }
 
   void _snackbar(String title, String message, SnackBarAction action) {
     if (!Get.isSnackbarOpen!) {
-      Get.rawSnackbar( 
+      Get.rawSnackbar(
         padding: EdgeInsets.only(left: 20, right: 30, top: 16, bottom: 16),
         title: title,
         message: message,
-        mainButton: ElevatedButton(
-          onPressed: action.onPressed, 
-          child: Text(action.label)
-        ),
+        mainButton: ElevatedButton(onPressed: action.onPressed, child: Text(action.label)),
       );
     }
-
   }
 }
-
-/*
-
-content: Row(
-                            children: <Widget>[
-                              Icon(Icons.warning, color: Colors.red),
-                              SizedBox(width: 20),
-                              Text(e.message),
-                            ],
-                          ),
-                          action: SnackBarAction(
-                            label: "System settings",
-                            onPressed: SystemSettings.app,
-                          ),
-                          */
