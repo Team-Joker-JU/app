@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:flutter_blue/gen/flutterblue.pbjson.dart';
 import 'package:ims/src/app/data/bluetooth/bluetooth_interactor.dart';
 import 'package:ims/src/app/data/bluetooth/bluetooth_controller.dart';
 

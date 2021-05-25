@@ -11,6 +11,7 @@ class RobotInteractor extends BluetoothInteractor {
     final robotAcceleration = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_ACCELERATION_UUID))!;
     final robotSteering = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_STEERING_UUID))!;
     final robotCollision = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_COLLISION_UUID))!;
+    final robotMode = BluetoothResolver.findCharacteristic(robotService, Guid(BLECharacteristics.ROBOT_MODE_UUID))!;
 
     final servicesByUUID = Map<Guid, BluetoothService>();
     servicesByUUID[Guid(BLEServices.ROBOT_UUID)] = robotService;
@@ -19,7 +20,8 @@ class RobotInteractor extends BluetoothInteractor {
     characteristicsByUUID[Guid(BLECharacteristics.ROBOT_ACCELERATION_UUID)] = robotAcceleration;
     characteristicsByUUID[Guid(BLECharacteristics.ROBOT_STEERING_UUID)] = robotSteering;
     characteristicsByUUID[Guid(BLECharacteristics.ROBOT_COLLISION_UUID)] = robotCollision;
-
+    characteristicsByUUID[Guid(BLECharacteristics.ROBOT_MODE_UUID)] = robotMode;
+    
     return RobotInteractor._(servicesByUUID, characteristicsByUUID);
   }
 

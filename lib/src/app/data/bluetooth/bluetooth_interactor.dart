@@ -1,6 +1,5 @@
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:ims/src/app/data/bluetooth/interactors/robot_interactor.dart';
-import 'package:ims/src/app/data/bluetooth/interactors/uart_interactor.dart';
 import 'package:synchronized/synchronized.dart';
 
 class BluetoothInteractor {
@@ -33,8 +32,6 @@ class BluetoothInteractor {
     switch (Interactor) {
       case RobotInteractor:
         return RobotInteractor(services) as Interactor;
-      case UARTInteractor:
-        return UARTInteractor(services) as Interactor;
     }
   }
 }

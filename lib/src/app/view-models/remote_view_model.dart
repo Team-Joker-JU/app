@@ -9,7 +9,7 @@ import 'package:synchronized/synchronized.dart';
 
 class RemoteViewModel extends BaseViewModel {
   int _acceleration = 0;
-  int _degree = 0;
+  int _steering = 0;
   int _threshold = 10;
 
   bool autoDriving = true;
@@ -17,7 +17,7 @@ class RemoteViewModel extends BaseViewModel {
   final _deviceManager = GetIt.I<BluetoothDeviceManager<RobotInteractor, RobotController>>();
 
   int _startTime = DateTime.now().millisecondsSinceEpoch;
-  var _lock = new Lock();
+
   double currentAcceleration = 0;
 
   late StreamSubscription<int> collisionSubscription;
@@ -36,31 +36,37 @@ class RemoteViewModel extends BaseViewModel {
     super.dispose();
   }
 
+  Future<void> toggleAutomode() async {
+    await _deviceManager.controller!.setAutomode();
+  }
+
+  var _lock = new Lock();
+  
   Future<void> onDirectionChanged(double degree, double distance) async {
     int elapsedTime = DateTime.now().millisecondsSinceEpoch - _startTime;
     currentAcceleration = distance;
 
     if (elapsedTime < 100 && distance != 0) return;
 
-    print("thres: " + degree.toString());
-    print("thres: " + laterally(degree).toString());
-
     await _lock.synchronized(() async {
       double longitude = longitudinally(degree);
       double lateral = laterally(degree);
       int acceleration = (currentAcceleration * 100.0).toInt() * longitude.toInt(); //* longitude;
       int steering = (lateral * 100.0).toInt();
-      //print("Degree: " + degree.toString());
 
-      if (acceleration > _acceleration + _threshold || acceleration < _acceleration - _threshold || acceleration == 0) {
+
+      if (acceleration > _acceleration + _threshold || 
+          acceleration < _acceleration - _threshold || 
+          steering > _steering + _threshold || 
+          steering < _steering - _threshold || 
+          acceleration == 0) {
         _startTime = DateTime.now().millisecondsSinceEpoch;
-        print("old acceleration: " + _acceleration.toString());
-        print("acceleration: " + acceleration.toString());
-        print("thres: " + (_acceleration - _threshold).toString());
-        print("thresv: " + (_threshold).toString());
         _acceleration = acceleration;
+        _steering = steering;
         await _deviceManager.controller?.setAcceleration(acceleration);
         await _deviceManager.controller?.setSteering(steering);
+        print("Acceleration" + acceleration.toString());
+        print("Steering" + steering.toString());
       }
     });
   }

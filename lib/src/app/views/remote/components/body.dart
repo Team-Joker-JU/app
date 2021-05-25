@@ -27,6 +27,10 @@ class Body extends ViewModelBuilderWidget<RemoteViewModel> {
               degree,
               distance,
             ),
+          ),
+          Switch(
+            value: false, 
+            onChanged: (value) async => viewModel.toggleAutomode(),
           )
         ],
       ),

@@ -21,6 +21,10 @@ class RobotController extends BluetoothController {
     return this._interactor.write(Guid(ROBOT_STEERING_UUID), [steering]);
   }
 
+  Future<void> setAutomode() {
+    return this._interactor.write(Guid(ROBOT_MODE_UUID), [0]);
+  }
+
   Future<bool> startCollision() async {
     return this._interactor.setNotifyValue(Guid(ROBOT_COLLISION_UUID), true);
   }

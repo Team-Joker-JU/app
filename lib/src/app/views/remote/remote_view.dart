@@ -17,7 +17,6 @@ class RemoteView extends ViewModelBuilderWidget<RemoteViewModel> {
 
   @override
   void onViewModelReady(RemoteViewModel viewModel) async {
-    print("HEHEHEHEH");
     return viewModel.initialize();
   }
 

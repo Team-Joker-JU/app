@@ -9,7 +9,6 @@ import 'package:ims/src/app/data/bluetooth/bluetooth_device_manager.dart';
 import 'package:ims/src/app/data/bluetooth/bluetooth_discover_manager.dart';
 import 'package:ims/src/app/data/bluetooth/controllers/robot_controller.dart';
 import 'package:ims/src/app/data/bluetooth/interactors/robot_interactor.dart';
-import 'package:ims/src/app/views/handshake/handshake_view.dart';
 import 'package:ims/src/app/views/navigation/navigation_view.dart';
 import 'package:stacked/stacked.dart';
 
