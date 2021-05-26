@@ -5,6 +5,8 @@ import 'package:ims/src/app/views/dashboard/components/body.dart';
 import 'package:stacked/stacked.dart';
 
 class DashboardView extends ViewModelBuilderWidget<DashboardViewModel> {
+  final title = "Dashboard";
+
   @override
   bool get reactive => true;
 
@@ -26,8 +28,13 @@ class DashboardView extends ViewModelBuilderWidget<DashboardViewModel> {
   Widget builder(BuildContext context, DashboardViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dashboard"),
-        backgroundColor: Colors.blueAccent,
+        centerTitle: true,
+        title: Text(
+          title, 
+          style: Theme.of(context).textTheme.headline1,
+        ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 10,
         actions: <Widget>[
           IconButton(
             onPressed: () async => viewModel.disconnect(),

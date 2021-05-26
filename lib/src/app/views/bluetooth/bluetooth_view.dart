@@ -5,6 +5,8 @@ import 'package:stacked/stacked.dart';
 import 'package:system_settings/system_settings.dart';
 
 class BluetoothView extends ViewModelBuilderWidget<BluetoothViewModel> {
+  final title = "Bluetooth";
+  
   @override
   bool get reactive => true;
 
@@ -29,8 +31,13 @@ class BluetoothView extends ViewModelBuilderWidget<BluetoothViewModel> {
       BuildContext context, BluetoothViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Bluetooth"),
-        backgroundColor: Colors.blueAccent,
+        centerTitle: true,
+        title: Text(
+          title, 
+          style: Theme.of(context).textTheme.headline1,
+        ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 10,
         actions: <Widget>[
           viewModel.isRefreshing
               ? IconButton(

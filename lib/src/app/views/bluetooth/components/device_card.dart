@@ -18,12 +18,11 @@ class DeviceCard extends ViewModelBuilderWidget<BluetoothViewModel> {
   Widget builder(
       BuildContext context, BluetoothViewModel viewModel, Widget? child) {
     return Card(
-      color: Colors.white,
       child: ListTile(
         leading: Container(
           height: double.infinity,
           child:
-              Icon(Icons.bluetooth_searching, color: Colors.black54, size: 30),
+              Icon(Icons.bluetooth_searching, color: Theme.of(context).accentColor, size: 30),
         ),
         title: Text(this._device.name.isNotEmpty
             ? this._device.name
@@ -32,10 +31,10 @@ class DeviceCard extends ViewModelBuilderWidget<BluetoothViewModel> {
         trailing: ConstrainedBox(
           constraints: BoxConstraints.tightFor(width: 100, height: 40),
           child: (viewModel.selectedDevice == null) 
-            ? button(_viewModel, _device) 
+            ? button(context, _viewModel, _device) 
             : (viewModel.selectedDevice! == _device) 
-            ? selectedButton()
-            : disabledButton()
+            ? selectedButton(context)
+            : disabledButton(context)
         ),
       ),
     );
@@ -46,30 +45,30 @@ class DeviceCard extends ViewModelBuilderWidget<BluetoothViewModel> {
     return _viewModel;
   }
 
-  ElevatedButton button(BluetoothViewModel viewModel, BluetoothDevice device) {
+  ElevatedButton button(BuildContext context, BluetoothViewModel viewModel, BluetoothDevice device) {
     return ElevatedButton(
       child: Text("Connect"),
-      style: ButtonStyle(),
       onPressed: () async => viewModel.connect(_device),
     );
   }
 
-  ElevatedButton disabledButton() {
+  ElevatedButton disabledButton(BuildContext context) {
     return ElevatedButton(
       child: Text("Connect"),
       onPressed: null,
     );
   }
 
-  ElevatedButton selectedButton() {
+  ElevatedButton selectedButton(BuildContext context) {
     return ElevatedButton(
       child: SizedBox(
         width: 20,
         height: 20,
         child: CircularProgressIndicator(),
       ),
-      style: ButtonStyle(),
-      onPressed: null,
+      onPressed: () {
+        return;
+      },
     );
   }
 }

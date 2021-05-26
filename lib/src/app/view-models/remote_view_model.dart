@@ -8,13 +8,18 @@ import 'package:stacked/stacked.dart';
 import 'package:synchronized/synchronized.dart';
 
 class RemoteViewModel extends BaseViewModel {
+  final _deviceManager = GetIt.I<BluetoothDeviceManager<RobotInteractor, RobotController>>();
+
   int _acceleration = 0;
   int _steering = 0;
   int _threshold = 10;
 
-  bool autoDriving = true;
-
-  final _deviceManager = GetIt.I<BluetoothDeviceManager<RobotInteractor, RobotController>>();
+  bool _isAutomodeToggled = false;
+  bool get isAutomodeToggled => _isAutomodeToggled;
+  set isAutomodeToggled(bool state) {
+    _isAutomodeToggled = state;
+    notifyListeners();
+  }
 
   int _startTime = DateTime.now().millisecondsSinceEpoch;
 
@@ -24,9 +29,9 @@ class RemoteViewModel extends BaseViewModel {
 
   Future<void> initialize() async {
     await _deviceManager.controller?.startCollision();
-    collisionSubscription = _deviceManager.controller!.collisionResults().listen((event) {
-      print(event);
-    });
+    //collisionSubscription = _deviceManager.controller!.collisionResults().listen((event) {
+    //  print(event);
+    //});
   }
 
   @override
@@ -37,11 +42,12 @@ class RemoteViewModel extends BaseViewModel {
   }
 
   Future<void> toggleAutomode() async {
-    await _deviceManager.controller!.setAutomode();
+    await _deviceManager.controller?.setAutomode();
+    isAutomodeToggled = !isAutomodeToggled;
   }
 
   var _lock = new Lock();
-  
+
   Future<void> onDirectionChanged(double degree, double distance) async {
     int elapsedTime = DateTime.now().millisecondsSinceEpoch - _startTime;
     currentAcceleration = distance;

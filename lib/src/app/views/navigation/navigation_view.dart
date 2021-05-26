@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ims/src/app/views/bluetooth/bluetooth_view.dart';
 import 'package:ims/src/app/views/dashboard/dashboard_view.dart';
 import 'package:ims/src/app/views/remote/remote_view.dart';
 import 'package:stacked/stacked.dart';
@@ -11,12 +10,12 @@ class NavigationView extends ViewModelBuilderWidget<IndexTrackingViewModel> {
       body: getViewForIndex(viewModel.currentIndex),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.black,
           boxShadow: [BoxShadow(color: Colors.black)],
         ),
         child: BottomNavigationBar(
           selectedItemColor: Colors.lightBlue,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).bottomAppBarColor,
           currentIndex: viewModel.currentIndex,
           onTap: viewModel.setIndex,
           items: [

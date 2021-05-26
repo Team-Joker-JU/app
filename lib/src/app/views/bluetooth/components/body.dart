@@ -14,29 +14,30 @@ class Body extends ViewModelBuilderWidget<BluetoothViewModel> {
 
   @override
   Widget builder(BuildContext context, BluetoothViewModel viewModel, Widget? child) {
-    return DefaultSafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text("Devices"),
-          Card(
-            child: viewModel.isRefreshing
-                ? LinearProgressIndicator(
-                    backgroundColor: Colors.black12,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.blueAccent,
+    return Container(
+      color: Theme.of(context).primaryColor,
+      child: DefaultSafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Flexible(
+              child: DeviceList(viewModel),
+            ),
+            Card(
+              child: viewModel.isRefreshing
+                  ? LinearProgressIndicator(
+                      backgroundColor: Colors.black12,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).accentColor
+                      ),
+                    )
+                  : LinearProgressIndicator(
+                      backgroundColor: Colors.black12,
+                      value: 0,
                     ),
-                  )
-                : LinearProgressIndicator(
-                    backgroundColor: Colors.black12,
-                    value: 0,
-                  ),
-          ),
-          SizedBox(height: 10),
-          Flexible(
-            child: DeviceList(viewModel),
-          )
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

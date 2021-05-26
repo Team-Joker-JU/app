@@ -6,6 +6,8 @@ import 'package:ims/src/app/views/remote/components/body.dart';
 import 'package:stacked/stacked.dart';
 
 class RemoteView extends ViewModelBuilderWidget<RemoteViewModel> {
+  final title = "Remote Control";
+
   @override
   bool get reactive => true;
 
@@ -29,7 +31,13 @@ class RemoteView extends ViewModelBuilderWidget<RemoteViewModel> {
   Widget builder(BuildContext context, RemoteViewModel viewModel, Widget? child) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Remote Control"),
+          centerTitle: true,
+          title: Text(
+            title, 
+            style: Theme.of(context).textTheme.headline1,
+          ),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 10,
         ),
         body: Body(viewModel));
   }
